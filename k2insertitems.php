@@ -77,15 +77,15 @@ class plgK2Example extends K2Plugin
 			for ($i=0; $i<$count; $i++){
 				// Select item text	
 				$query = $db->getQuery(true);
-				$query->select($db->quoteName(array('introtext')));
+				$query->select($db->quoteName(array('introtext','fulltext')));
 				$query->from($db->quoteName('#__k2_items'));
 				$query->where($db->quoteName('id') . ' = '. $db->quote($matches[$i]));
 				$db->setQuery($query);
 				
 				$row = $db->loadAssoc();
 				
-				//Replace {K2ID xxx}
-				$item->text = str_replace('{K2ID:'.$matches[$i].'}',$row['introtext'],$item->text);
+				//Replace {K2ID:xxx}
+				$item->text = str_replace('{K2ID:'.$matches[$i].'}',$row['introtext'].$row['fulltext'],$item->text);
 				//unset($query);
 			}
 		} else {

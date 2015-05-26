@@ -63,12 +63,43 @@ class plgK2Example extends K2Plugin
 	function onK2BeforeDisplayContent(&$item, &$params, $limitstart)
 	{
 		$mainframe = JFactory::getApplication();
+		
+		//Find the {K2ID xxx} pattern inside $item->text
+		$matches = Array();		
+		$count = preg_match_all("/(?<={K2ID:)[^}]*(?=})/", $item->text, $matches);
+		
+		//Split found patterns to array
+		if ($count > 0) {
+			$db = JFactory::getDbo();
+			// Create a new query object.
+			
+			$matches = $matches[0];
+			for ($i=0; $i<$count; $i++){
+				// Select item text	
+				$query = $db->getQuery(true);
+				$query->select($db->quoteName(array('introtext')));
+				$query->from($db->quoteName('#__k2_items'));
+				$query->where($db->quoteName('id') . ' = '. $db->quote($matches[$i]));
+				$db->setQuery($query);
+				
+				$row = $db->loadAssoc();
+				
+				//Replace {K2ID xxx}
+				$item->text = str_replace('{K2ID:'.$matches[$i].'}',$row['introtext'],$item->text);
+				//unset($query);
+			}
+		} else {
+			//Sorry dude no matches
+			return '';
+		}
+		
 		return '';
 	}
 
 	// Event to display (in the frontend) the YouTube URL as entered in the item form
 	function onK2AfterDisplayContent(&$item, &$params, $limitstart)
 	{
+		/*
 		$mainframe = JFactory::getApplication();
 
 		// Get the output of the K2 plugin fields (the data entered by your site maintainers)
@@ -94,7 +125,7 @@ class plgK2Example extends K2Plugin
 		</object>
 		';
 
-		return $output;
+		return $output;*/
 	}
 
 	// Event to display (in the frontend) the YouTube URL as entered in the category form

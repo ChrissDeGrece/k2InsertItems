@@ -23,7 +23,7 @@ class plgK2Example extends K2Plugin
 
 	// Some params
 	var $pluginName = 'example';
-	var $pluginNameHumanReadable = 'Example K2 Plugin';
+	var $pluginNameHumanReadable = 'K2 Insert Items';
 
 	function plgK2Example(&$subject, $params)
 	{
@@ -99,7 +99,7 @@ class plgK2Example extends K2Plugin
 	// Event to display (in the frontend) the YouTube URL as entered in the item form
 	function onK2AfterDisplayContent(&$item, &$params, $limitstart)
 	{
-		/*
+		
 		$mainframe = JFactory::getApplication();
 
 		// Get the output of the K2 plugin fields (the data entered by your site maintainers)
@@ -125,7 +125,7 @@ class plgK2Example extends K2Plugin
 		</object>
 		';
 
-		return $output;*/
+		return $output;
 	}
 
 	// Event to display (in the frontend) the YouTube URL as entered in the category form
